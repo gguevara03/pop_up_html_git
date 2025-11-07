@@ -1,0 +1,331 @@
+<style>
+    /* ------------------------------
+       ESTILOS DEL BOTÓN FLOTANTE
+       ------------------------------ */
+    .chat-toggle {
+      position: fixed;
+      bottom: 60px;
+      right: 20px;
+      width: 90px;
+      height: 90px;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .chat-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .chat-toggle img {
+      width: 90px;
+    }
+
+    /* ------------------------------
+       ESTILOS DE LA VENTANA DE CHAT
+       ------------------------------ */
+    .chat-window {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      width: 420px;
+      max-width: 98vw;
+      height: 90vh;
+      max-height: 98vh;
+      background-color: #FFFFFF;
+      border-radius: 16px; /* Bordes redondeados en ambos lados */
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+      font-family: Arial, sans-serif;
+    }
+
+    .chat-header {
+      background-color: #43d1c9;
+      color: #FFFFFF;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+	  font-family: "Baloo 2", Sans-serif;
+    }
+
+    .chat-header .chat-close {
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 18px;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      background-color: #F5F5F5;
+      overflow-y: auto;
+    }
+
+    .chat-footer {
+      display: flex;
+      border-top: 1px solid #DDD;
+      padding: 5px;
+      background-color: #FFFFFF;
+    }
+
+    .chat-footer input[type="text"] {
+      flex: 1;
+      border: 1px solid #CCC;
+      border-radius: 20px;
+      padding: 8px 12px;
+      outline: none;
+      font-size: 14px;
+	  font-family: "Baloo 2", Sans-serif;
+    }
+
+    .chat-footer button {
+      background-color: #081c54;
+      border: none;
+      border-radius: 20px;
+      color: #FFFFFF;
+      padding: 8px 12px;
+      margin-left: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+	  font-family: "Baloo 2", Sans-serif;
+    }
+
+    .chat-footer button:hover {
+      background-color: #1DA851;
+    }
+
+    /* ------------------------------
+       ESTILOS DE LOS MENSAJES
+       ------------------------------ */
+    .message {
+      margin: 5px 0;
+      padding: 8px 12px;
+      border-radius: 12px;
+      max-width: 85%;
+      word-wrap: break-word;
+      font-size: 14px;
+      line-height: 1.4;
+	  font-family: "Baloo 2", Sans-serif;
+    }
+
+    .message.user {
+      background-color: #43d1c9;
+      align-self: flex-end;
+      color: #fff;
+    }
+
+    .message.bot {
+      background-color: #081c54;
+      border: 1px solid #DDD;
+      align-self: flex-start;
+      color: #fff;
+    }
+
+    /* Scroll suave para chat-body */
+    .chat-body {
+      scroll-behavior: smooth;
+    }
+  </style>
+<!-- ------------------------------
+       BOTÓN FLOTANTE
+       ------------------------------ -->
+  <div class="chat-toggle" id="chat-toggle">
+    <img src="https://karia.com.ar/wp-content/uploads/2025/06/chatbot_karia.png"/>
+  </div>
+
+  <!-- ------------------------------
+       VENTANA DE CHAT
+       ------------------------------ -->
+  <div class="chat-window" id="chat-window">
+    <div class="chat-header">
+      Karia
+      <span class="chat-close" id="chat-close">&times;</span>
+    </div>
+    <div class="chat-body" id="chat-body">
+      <!-- Aquí aparecerán los mensajes -->
+      <div class="message bot">Hablá con Karia</div>
+    </div>
+    <div class="chat-footer">
+      <input
+        type="text"
+        id="chat-input"
+        placeholder="Escribe tu mensaje..."
+        autocomplete="off"
+      />
+      <button id="chat-send">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // Referencias a elementos
+      const toggleBtn  = document.getElementById('chat-toggle');
+      const chatWindow = document.getElementById('chat-window');
+      const closeBtn   = document.getElementById('chat-close');
+      const sendBtn    = document.getElementById('chat-send');
+      const inputField = document.getElementById('chat-input');
+      const chatBody   = document.getElementById('chat-body');
+
+      // URL real de endpoint
+      const endpoint = 'https://cnmp7nmsie.execute-api.us-east-1.amazonaws.com/desa/karia';
+      const apiKey = 'wHwv3TzbUM7ENA57EwmX99V5zc6htwus3Fl6WRT8';
+      let conversationId = ""; // Guardar el conversation_id entre mensajes
+
+      // Estado de la conversación y placeholder de “escribiendo…”
+      let messages = [];
+      const TYPING_PLACEHOLDER = 'Escribiendo…';
+
+      // Alternar visibilidad del chat
+      function toggleChat() {
+        if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+          chatWindow.style.display = 'flex';
+          inputField.focus();
+        } else {
+          chatWindow.style.display = 'none';
+        }
+      }
+
+      // Cerrar el chat
+      function closeChat() {
+        chatWindow.style.display = 'none';
+      }
+
+      // Renderizar todo el arreglo `messages` en el DOM
+      function renderMessages() {
+        chatBody.innerHTML = '';
+        messages.forEach((msg) => {
+          const div = document.createElement('div');
+          div.classList.add('message', msg.sender);
+          if (msg.sender === 'bot') {
+            // Negrita y saltos de línea
+            let formatted = msg.text
+              .replace(/\*([^\*]+)\*/g, '<b>$1</b>') // negrita
+              .replace(/\n/g, '<br>');              // saltos de línea
+            div.innerHTML = formatted;
+          } else {
+            div.textContent = msg.text;
+          }
+          chatBody.appendChild(div);
+        });
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      // Añadir un mensaje al arreglo y volver a renderizar
+      function pushMessage(text, sender) {
+        messages.push({ text, sender });
+        renderMessages();
+      }
+
+      // Enviar el mensaje del usuario y llamar al endpoint
+      function sendMessage() {
+        const userText = inputField.value.trim();
+        if (!userText) return;
+
+        pushMessage(userText, 'user');
+        pushMessage(TYPING_PLACEHOLDER, 'bot');
+        inputField.value = '';
+        inputField.disabled = true;
+        sendBtn.disabled = true;
+
+        // Construir el body del request
+        const body = {
+          human_input: userText,
+          client: "karia",
+          bot: "chatbot",
+          cellphone: "99999",
+          conversation_id: conversationId
+        };
+
+        fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey
+          },
+          body: JSON.stringify(body)
+        })
+          .then(response => response.json())
+          .then(data => {
+            // Soportar ambas estructuras de respuesta
+            let result;
+            if (data.result) {
+              result = data.result;
+            } else if (data.body && data.body.CONVERSATION) {
+              result = data.body.CONVERSATION;
+            } else {
+              result = {};
+            }
+
+            conversationId = result.conversation_id || conversationId;
+            const history = result.conversation_history || [];
+            let botReply = 'Error: sin respuesta del bot.';
+            if (history.length > 1) {
+              botReply = history[history.length - 1];
+            } else if (history.length === 1) {
+              botReply = history[0];
+            }
+            botReply = botReply.replace(/<END_OF_TURN>/g, '').trim();
+
+            for (let i = messages.length - 1; i >= 0; i--) {
+              if (messages[i].text === TYPING_PLACEHOLDER) {
+                messages[i].text = botReply;
+                break;
+              }
+            }
+            renderMessages();
+          })
+          .catch(err => {
+            console.error('Error en fetch:', err);
+            for (let i = messages.length - 1; i >= 0; i--) {
+              if (messages[i].text === TYPING_PLACEHOLDER) {
+                messages[i].text = `❗ Hubo un error: ${err.message}`;
+                break;
+              }
+            }
+            renderMessages();
+          })
+          .finally(() => {
+            inputField.disabled = false;
+            sendBtn.disabled = false;
+            inputField.focus();
+          });
+      }
+
+      // EVENT LISTENERS
+      toggleBtn.addEventListener('click', toggleChat);
+      closeBtn.addEventListener('click', closeChat);
+      sendBtn.addEventListener('click', sendMessage);
+      inputField.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // Abrir chat al hacer click en el botón externo
+      const externalBtn = document.querySelector('.eael-creative-button');
+      if (externalBtn) {
+        externalBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          // Solo abrir si está cerrado
+          if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+            toggleChat();
+          }
+        });
+      }
+
+      // Iniciar con el chat oculto
+      chatWindow.style.display = 'none';
+    })();
+  </script>
