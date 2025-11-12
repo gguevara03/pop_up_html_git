@@ -1,325 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Karia Demo</title>
-  <!-- Baloo 2 & Karia styling -->
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    .demo-box {
-      max-width: auto;
-      min-height: 70vh;
-      width: 95vw;
-      margin: auto;
-      background: #fff;
-      border-radius: 28px;
-      box-shadow: 0 8px 32px rgba(67,209,201,0.13);
-      padding: 32px 32px;
-      display: flex;
-      flex-direction: column;
-      justify-content: stretch;
-      overflow: visible;
-    }
-    * {
-      box-sizing: border-box;
-    }
-        html {
-          margin: 0;
-          font-family: 'Baloo 2', Arial, sans-serif;
-          background: #f8fcff;
-          color: #081c54;
-        }
-        body {
-          min-height: 100vh;
-        }
-    /* Navbar */
-    .navbar {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      background: white;
-      padding: 16px 24px;
-      font-size: 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      font-family: 'Baloo 2', Arial, sans-serif;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-    .navbar a {
-      color: #081c54;
-      text-decoration: none;
-      margin: 0 16px;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    .navbar a:hover, .navbar .active {
-      color: #43d1c9;
-    }
-    .navbar .logo {
-      position: absolute;
-      left: 30px;
-      top: 17px;
-      /* Adjust as needed */
-      height: 32px;
-    }
-
-    /* DEMO Main Layout */
-    .demo-container {
-      max-width: auto;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      background: #fff;
-      border-radius: 0;
-      box-shadow: none;
-      display: flex;
-      position: relative;
-    }
-    .demo-left {
-      width: 60%;
-      min-width: 320px;
-      max-width: 600px;
-      background: #081c54;
-      border-radius: 24px 0 0 24px;
-      padding: 32px 16px 32px 32px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      box-sizing: border-box;
-      /* height: auto; */
-      /* min-height: unset; */
-    }
-    .demo-bot-selector {
-      display: flex;
-      margin-bottom: 20px;
-      gap: 12px;
-    }
-    .demo-bot-tab {
-      background: #43d1c9;
-      border: none;
-      color: #fff;
-      font-family: inherit;
-      font-size: 1.04em;
-      font-weight: 700;
-      border-radius: 14px;
-      padding: 11px 28px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      box-shadow: 0 2px 10px rgba(67, 209, 201, 0.08);
-    }
-    .demo-bot-tab.selected, .demo-bot-tab:focus {
-      background: #fff;
-      color: #43d1c9;
-      outline: none;
-      box-shadow: 0 2px 16px rgba(67, 209, 201, 0.15);
-    }
-    .demo-bot-desc {
-      background: #fff;
-      border-radius: 16px;
-      padding: 20px 18px;
-      color: #081c54;
-      font-size: 1.05em;
-      min-height: 120px;
-  /* max-height and overflow removed from description panel */
-      margin-top: 6px;
-      box-shadow: 0 1px 12px rgba(67,209,201,0.07);
-    }
-    /* Demo Right: Chat */
-    .demo-right {
-      flex: 1;
-      min-width: 0;
-      background: #f8fcff;
-      border-radius: 0 24px 24px 0;
-      padding: 32px 32px 24px 18px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      box-sizing: border-box;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-    .demo-chat-title {
-      background: #43d1c9;
-      color: #fff;
-      font-size: 1.1em;
-      font-weight: 600;
-      border-radius: 14px;
-      padding: 12px 28px 9px 13px;
-      margin-bottom: 14px;
-      max-width: 65%;
-      box-shadow: 0 2px 12px rgba(67,209,201,0.07);
-      font-family: inherit;
-      display: inline-block;
-    }
-    /* Embedded Chat Window (like floating) */
-    .chat-window-embedded {
-      width: 100%;
-      flex: 1;
-      position: relative;
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 3px 22px rgba(0,0,0,0.15);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      min-height: 350px;
-      height: 100%;
-      margin-top: 0;
-      font-family: inherit;
-        }
-        .chat-header {
-      background: #43d1c9;
-      color: #fff;
-      padding: 10px 18px;
-      font-size: 16px;
-      border-radius: 18px 18px 0 0;
-      font-weight: 700;
-      font-family: inherit;
-      display: block;
-      margin: 0;
-        }
-        .chat-body {
-      flex: 1;
-      min-height: 120px;
-      max-height: none;
-      padding: 10px 14px;
-      background: #f5f5f5;
-      overflow-y: auto;
-      font-family: inherit;
-      line-height: 1.51;
-      margin: 0;
-    }
-    @media (max-width: 900px) {
-      .demo-container {
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
-        width: 100%;
-        overflow-x: hidden;
-      }
-      .demo-left {
-        width: 100%;
-        min-width: 0;
-        max-width: 100%;
-        border-radius: 24px 24px 0 0;
-        padding: 24px 8px 18px 8px;
-      }
-      .demo-right {
-        min-width: 0;
-        width: 100%;
-        border-radius: 0 0 24px 24px;
-        padding: 18px 8px 18px 8px;
-        margin-top: 0;
-        margin-bottom: 0;
-      }
-      .chat-window-embedded {
-        min-height: 300px;
-        height: 100%;
-        margin-top: 0;
-        margin-bottom: 0;
-      }
-      .chat-header {
-        margin: 0;
-      }
-      .chat-body {
-        max-height: none;
-        margin: 0;
-      }
-    }
-    .chat-footer {
-      display: flex;
-      border-top: 1px solid #eee;
-      background: #fff;
-      padding: 13px 17px;
-      border-radius: 0 0 18px 18px;
-      font-family: inherit;
-      margin-top: 0;
-      margin-bottom: 0;
-      align-items: center;
-      position: relative;
-      bottom: auto;
-    }
-    .chat-footer input[type="text"] {
-      flex: 1;
-      border: 1px solid #CCC;
-      border-radius: 20px;
-      padding: 8px 12px;
-      outline: none;
-      font-size: 15px;
-      font-family: inherit;
-      margin-right: 7px;
-    }
-    .chat-footer button {
-      background-color: #081c54;
-      border: none;
-      border-radius: 20px;
-      color: #FFFFFF;
-      padding: 8px 17px;
-      cursor: pointer;
-      font-size: 14px;
-      font-family: inherit;
-      transition: background-color 0.2s;
-      font-weight: 600;
-    }
-    .chat-footer button:hover {
-      background-color: #1DA851;
-    }
-    .message {
-      margin: 5px 0;
-      padding: 8px 13px;
-      border-radius: 12px;
-      word-wrap: break-word;
-      font-size: 14px;
-      font-family: inherit;
-      line-height: 1.5;
-      max-width: 83%;
-    }
-    .message.user {
-      background-color: #43d1c9;
-      color: #fff;
-      align-self: flex-end;
-      border-radius: 16px 16px 16px 6px;
-      margin-left: auto;
-      margin-right: 0;
-      box-shadow: 0 2px 8px rgba(67,209,201,0.09);
-      font-weight: 500;
-      padding: 7px 18px 7px 14px;
-      max-width: 60%;
-      text-align: right;
-    }
-    .message.bot {
-      background-color: #081c54;
-      color: #fff;
-      align-self: flex-start;
-      border-radius: 16px 16px 6px 16px;
-      margin-right: auto;
-      margin-left: 0;
-      box-shadow: 0 2px 8px rgba(8,28,84,0.09);
-      font-weight: 500;
-      padding: 7px 14px 7px 18px;
-      max-width: 60%;
-      text-align: left;
-      white-space: pre-line;
-      word-break: break-word;
-      }
-    .message.typing {
-      background-color: #081c54;
-      color: #fff;
-      align-self: flex-start;
-      border-radius: 16px 16px 6px 16px;
-      margin-right: auto;
-      margin-left: 0;
-      box-shadow: 0 2px 8px rgba(8,28,84,0.09);
-      font-weight: 500;
-      padding: 7px 14px 7px 18px;
-      max-width: 60%;
-      text-align: left;
-    }
-
-    /* Floating button (from your original) - unchanged */
+<style>
+    /* ------------------------------
+       ESTILOS DEL BOTÓN FLOTANTE
+       ------------------------------ */
     .chat-toggle {
       position: fixed;
       bottom: 60px;
@@ -332,407 +14,179 @@
       align-items: center;
       cursor: pointer;
       transition: transform 0.2s;
-      /* Oculta el botón flotante si está en la demo */
-      visibility: hidden;
     }
-    .chat-toggle:hover { transform: scale(1.1); }
-    .chat-toggle img { width: 90px; }
 
-    /* Modal Form for Contact */
-    .contact-modal {
+    .chat-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .chat-toggle img {
+      width: 90px;
+    }
+
+    /* ------------------------------
+       ESTILOS DE LA VENTANA DE CHAT
+       ------------------------------ */
+    .chat-window {
       position: fixed;
-      inset: 0;
-      background: rgba(20,60,112,0.12);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10011;
+      bottom: 12px;
+      right: 12px;
+      width: 420px;
+      max-width: 98vw;
+      height: 90vh;
+      max-height: 98vh;
+      background-color: #FFFFFF;
+      border-radius: 16px; /* Bordes redondeados en ambos lados */
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
       display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+      font-family: Arial, sans-serif;
     }
-    .contact-modal-inner {
-      background: #fafcff;
-      border-radius: 18px;
-      box-shadow: 0 8px 38px rgba(67, 209, 201, 0.13);
-      padding: 28px 18px 22px 18px;
-      min-width: 320px;
-      max-width: 370px;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
-      font-family: inherit;
-      animation: fadeInModal 0.4s;
-      border: 2.5px solid #43d1c9;
-    }
-    @keyframes fadeInModal { from { transform: scale(0.97); opacity: 0;} to {transform: scale(1); opacity:1;}}
-    .contact-modal-inner h2 {
-      font-size: 1.45em;
-      margin-bottom: 10px;
-      color: #081c54;
-      font-weight: 700;
-      font-family: inherit;
-      text-align: left;
-      margin-top: 0;
-    }
-    .contact-modal-inner label {
-      font-weight: 500;
-      color: #081c54;
-      font-size: 15px; margin-bottom: 2px;
-      font-family: inherit;
-      display: block;
-      text-align: left;
-      margin-top: 10px;
-    }
-    .contact-modal-inner input {
-      width: 100%;
-      border: 1.7px solid #43d1c9;
-      border-radius: 13px;
-      padding: 13px 12px;
-      margin-bottom: 16px;
-      font-size: 16px;
-      font-family: inherit;
-      display: block;
-      background: #fff;
-      box-sizing: border-box;
-    }
-    .contact-modal-inner button[type="submit"] {
-      width: 100%;
-      background: #43d1c9;
-      color: #fff;
-      border: none;
-      border-radius: 18px;
-      padding: 16px 0;
-      font-size: 1.18em;
-      font-weight: 700;
-      letter-spacing: 1px;
-      font-family: inherit;
-      cursor: pointer;
-      margin-top: 18px;
-      margin-bottom: 0px;
-      transition: background 0.2s;
-      display: block;
-    }
-    .contact-modal-inner button[type="submit"]:hover { background: #081c54; }
-    .contact-modal-inner .modal-close {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      font-size: 32px;
-      color: #43d1c9;
-      background: none;
-      border: none;
-      cursor: pointer;
-      z-index: 20;
+
+    .chat-header {
+      background-color: #43d1c9;
+      color: #FFFFFF;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-weight: bold;
+	  font-family: "Baloo 2", Sans-serif;
     }
-    .contact-modal-inner .modal-msg {
-      font-size: 13px; color: #144084; text-align: center; margin-top: 8px;
+
+    .chat-header .chat-close {
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 18px;
     }
-    .contact-modal-inner .modal-disclaimer {
-      font-size: 12px;
-      color: #555;
-      margin-top: 13px;
-      text-align: center;
-      line-height: 1.2;
-      margin-bottom: 2px;
-      display: block;
-      width: 100%;
-      font-family: inherit;
-      margin-bottom: 0px;
+
+    .chat-body {
+      flex: 1;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      background-color: #F5F5F5;
+      overflow-y: auto;
     }
-    .contact-modal-inner .modal-privacy {
-      font-size: 12px;
-      color: #43d1c9;
-      text-align: center;
-      margin-top: 2px;
-      margin-bottom: 0px;
-      display: block;
-      width: 100%;
-      font-family: inherit;
+
+    .chat-footer {
+      display: flex;
+      border-top: 1px solid #DDD;
+      padding: 5px;
+      background-color: #FFFFFF;
+    }
+
+    .chat-footer input[type="text"] {
+      flex: 1;
+      border: 1px solid #CCC;
+      border-radius: 20px;
+      padding: 8px 12px;
+      outline: none;
+      font-size: 14px;
+	  font-family: "Baloo 2", Sans-serif;
+    }
+
+    .chat-footer button {
+      background-color: #081c54;
+      border: none;
+      border-radius: 20px;
+      color: #FFFFFF;
+      padding: 8px 12px;
+      margin-left: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+	  font-family: "Baloo 2", Sans-serif;
+    }
+
+    .chat-footer button:hover {
+      background-color: #1DA851;
+    }
+
+    /* ------------------------------
+       ESTILOS DE LOS MENSAJES
+       ------------------------------ */
+    .message {
+      margin: 5px 0;
+      padding: 8px 12px;
+      border-radius: 12px;
+      max-width: 85%;
+      word-wrap: break-word;
+      font-size: 14px;
+      line-height: 1.4;
+	  font-family: "Baloo 2", Sans-serif;
+    }
+
+    .message.user {
+      background-color: #43d1c9;
+      align-self: flex-end;
+      color: #fff;
+    }
+
+    .message.bot {
+      background-color: #081c54;
+      border: 1px solid #DDD;
+      align-self: flex-start;
+      color: #fff;
+    }
+
+    /* Scroll suave para chat-body */
+    .chat-body {
+      scroll-behavior: smooth;
     }
   </style>
-</head>
-<body>
-  <!-- Navbar -->
-  <div class="navbar">
-    <img class="logo" src="https://karia.com.ar/wp-content/uploads/2025/06/karia_logo.png" alt="Karia logo"/>
-    <a href="#">Inicio</a>
-    <a href="#">KarIA</a>
-    <a href="#">Producto</a>
-    <a href="#">Soluciones</a>
-    <a class="active" href="#demo">Demo</a>
-    <a href="#">Contacto</a>
-  </div>
-
-  <!-- Demo Section (hidden on home, shown on Demo) -->
-  <div class="demo-box">
-    <div class="demo-container" id="demo-container" style = "">
-    <!-- Left: Bot Selector -->
-    <div class="demo-left">
-      <span style="font-weight:700; color:#43d1c9; font-size:1.2em; margin-bottom:12px">Seleccione un bot</span>
-      <div class="demo-bot-selector">
-  <button class="demo-bot-tab selected" data-bot="como-usar">¿Cómo usar?</button>
-  <button class="demo-bot-tab" data-bot="ventas">Ventas</button>
-  <button class="demo-bot-tab" data-bot="despacho">Despacho</button>
-  <button class="demo-bot-tab" data-bot="informativo">Informativo</button>
-      </div>
-      <div class="demo-bot-desc" id="demo-bot-desc" style="margin-bottom:18px;">
-        <b>Cómo probar nuestras demos</b><br>
-        Entrá a la demo que quieras y hablá como lo harías por WhatsApp o en el chat de una web: saludá, hacé tu consulta y seguí la conversación con naturalidad. El asistente de Karia entiende lo que necesitás, responde claro, te sugiere próximos pasos (cotizar, compartir enlaces, agendar, derivar) y, si hace falta, te conecta con alguien del equipo. Probá las dudas típicas de tus clientes o de tu equipo y pensá cómo este mismo rendimiento podría funcionar en tu web, redes o WhatsApp para mejorar la atención y ahorrarte tiempo operativo.<br><br>
-      </div>
-    </div>
-    <!-- Right: Chat window area -->
-    <div class="demo-right">
-      <span class="demo-chat-title" id="demo-chat-title">Nombre Bot</span>
-      <div class="chat-window-embedded" id="chat-window-embedded">
-        <div class="chat-header">Karia</div>
-        <div class="chat-body" id="demo-chat-body">
-          <div class="message bot">Hablá con Karia</div>
-        </div>
-        <div class="chat-footer">
-          <input type="text" id="demo-chat-input" placeholder="Escribe tu mensaje..." autocomplete="off"/>
-          <button id="demo-chat-send">Enviar</button>
-        </div>
-      </div>
-    </div>
-    </div>
-  </div>
-
-  <!-- Floating button remains -->
+<!-- ------------------------------
+       BOTÓN FLOTANTE
+       ------------------------------ -->
   <div class="chat-toggle" id="chat-toggle">
     <img src="https://karia.com.ar/wp-content/uploads/2025/06/chatbot_karia.png"/>
   </div>
-  <!-- (Floating chat window overlay, unchanged from your code) -->
+
+  <!-- ------------------------------
+       VENTANA DE CHAT
+       ------------------------------ -->
   <div class="chat-window" id="chat-window">
-    <div class="chat-header">Karia <span class="chat-close" id="chat-close">&times;</span></div>
+    <div class="chat-header">
+      Karia
+      <span class="chat-close" id="chat-close">&times;</span>
+    </div>
     <div class="chat-body" id="chat-body">
+      <!-- Aquí aparecerán los mensajes -->
       <div class="message bot">Hablá con Karia</div>
     </div>
     <div class="chat-footer">
-      <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." autocomplete="off"/>
+      <input
+        type="text"
+        id="chat-input"
+        placeholder="Escribe tu mensaje..."
+        autocomplete="off"
+      />
       <button id="chat-send">Enviar</button>
     </div>
   </div>
 
-  <!-- Modal Contact Form -->
-  <!-- <div class="contact-modal" id="contact-modal">
-    <div class="contact-modal-inner">
-      <button class="modal-close" id="modal-close">&times;</button>
-      <h2>Formulario de Contacto</h2>
-      <form id="contact-form">
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" name="nombre" required/>
-      <label for="apellido">Apellido</label>
-      <input type="text" id="apellido" name="apellido" required/>
-      <label for="mail">Mail</label>
-      <input type="email" id="mail" name="mail" required pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"/>
-      <label for="telefono">Numero de telefono</label>
-      <input type="tel" id="telefono" name="telefono" required pattern="[0-9]+" inputmode="numeric"/>
-      <label for="empresa">Empresa <span style="font-weight:400;color:#43d1c9;font-size:12px">(Opcional)</span></label>
-      <input type="text" id="empresa" name="empresa"/>
-      <input type="hidden" id="user_name" name="user_name" />
-      <input type="hidden" id="user_email" name="user_email" />
-      <input type="hidden" id="message" name="message" />
-      <input type="hidden" id="time" name="time" />
-      <input type="hidden" id="subject" name="subject" />
-      <button type="submit">Enviar</button>
-      </form>
-      <div class="modal-msg" id="modal-msg">
-  </div> -->
-
   <script>
-    /* ------ Bot Tabs & Selector ------ */
-    const botTabs = document.querySelectorAll('.demo-bot-tab');
-    const botDesc = document.getElementById('demo-bot-desc');
-    const chatTitle = document.getElementById('demo-chat-title');
-    let selectedBot = 'Informativo';
-
-// ...existing code...
-  const botData = {
-  'como-usar': {
-    name: '¿Cómo usar?',
-    desc: `<b>Cómo probar nuestras demos</b><br>
-Entrá a la demo que quieras y hablá como lo harías por WhatsApp o en el chat de una web: saludá, hacé tu consulta y seguí la conversación con naturalidad. El asistente de Karia entiende lo que necesitás, responde claro, te sugiere próximos pasos (cotizar, compartir enlaces, agendar, derivar) y, si hace falta, te conecta con alguien del equipo. Probá las dudas típicas de tus clientes o de tu equipo y pensá cómo este mismo rendimiento podría funcionar en tu web, redes o WhatsApp para mejorar la atención y ahorrarte tiempo operativo.`
-  },
-      informativo: {
-        name: 'Informativo',
-        desc: `<b>Demo 3 · Karia RRHH</b><br>
-Qué resuelve: centraliza consultas internas y libera tiempo del equipo. Cubre vacaciones y licencias; políticas internas (código de conducta, manuales, uso de IA, trabajo remoto/presencial, higiene y seguridad); beneficios y reintegros (guardería/niñera, plus vacacional); actualizaciones de legajo, cambios de obra social, CBU; recibos y capacitaciones. Cuando corresponde, deriva al área adecuada.<br><br>
-<b>Ejemplos de preguntas:</b><br>• ¿Cuántos días de vacaciones me corresponden?<br>• ¿Cómo justificar una ausencia médica?<br>• ¿Dónde veo o descargo mi recibo de sueldo?<br>• ¿Qué beneficios ofrece la empresa? ¿Hay capacitaciones esta semana?<br><br>
-<b>Qué vas a notar:</b> tono cercano, respuestas consistentes y un flujo claro para completar gestiones o escalar a un humano.`
-      },
-      ventas: {
-        name: 'Ventas',
-        desc: `<b>Demo 1 · Karia Ventas</b><br>
-Atiende consultas comerciales 24/7, captar leads y acompaña la compra. Analiza el nivel de interés en tiempo real: si detecta intención alta, acelera la conversión; si percibe indecisión, ajusta el guión para despejar dudas y resaltar beneficios.<br><br>
-<b>Ejemplos de preguntas:</b><br>• ¿Qué tipos de productos venden?<br>• ¿Cuáles son las formas de pago o promociones?<br>• ¿Qué características tiene el producto?<br>• Quiero que me contacte un asesor.<br><br>
-<b>Qué vas a notar:</b> respuestas claras, propuesta de siguientes pasos (cotizar, compartir ficha técnica, derivar a ventas) y registro de interés para seguimiento posterior.`
-      },
-      despacho: {
-        name: 'Despacho',
-        desc: `<b>Demo 2 · Karia Atención al Cliente</b><br>
-Ideal para empresas que necesitan resolver consultas frecuentes, gestionar reclamos y dar soporte 24/7 sin perder la calidez humana. Esta demo muestra cómo Karia puede brindar respuestas claras, consultar estados (pedidos/turnos/servicios), guiar paso a paso, escalar casos y derivar a una persona del equipo cuando corresponda.<br><br>
-<b>Ejemplos de preguntas:</b><br>• ¿Podrían confirmarme el estado de mi pedido?<br>• ¿Puedo recibir la factura por correo electrónico?<br>• Recibí un producto defectuoso, ¿cómo hago el reclamo?<br>• ¿Puedo cambiar o devolver un producto?<br>• ¿Cuál es el tiempo de garantía?<br><br>
-<b>Qué vas a notar:</b> tono cercano, respuestas claras y consistentes, y un flujo guiado para completar gestiones (seguimiento, reclamos, reprogramaciones) o escalar rápidamente a una persona cuando corresponde.`
-      }
-    };
-
-    botTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        botTabs.forEach(t => t.classList.remove('selected'));
-        tab.classList.add('selected');
-        selectedBot = tab.dataset.bot;
-        if (selectedBot === 'como-usar') {
-          chatTitle.textContent = 'Nombre Bot';
-        } else {
-          chatTitle.textContent = 'Nombre Bot: ' + botData[selectedBot].name;
-        }
-        botDesc.innerHTML = botData[selectedBot].desc;
-        // Reset chat and conversation id only for bot demos
-        if (selectedBot !== 'como-usar') {
-          demoConversationId = "";
-          demoMessages = [];
-          pushDemoMessage('Hablá con Karia', 'bot');
-        }
-      });
-    });
-
-    /* ------ Demo Chat Logic (Embedded) ------ */
-    // Same endpoint/key as floating button, but bot is dynamic
-    const endpoint = 'https://cnmp7nmsie.execute-api.us-east-1.amazonaws.com/desa/karia';
-    const apiKey = 'wHwv3TzbUM7ENA57EwmX99V5zc6htwus3Fl6WRT8';
-
-    let demoConversationId = "";
-    let demoMessages = [];
-    const TYPING_PLACEHOLDER = 'Escribiendo…';
-    const demoChatBody = document.getElementById('demo-chat-body');
-    const demoInput = document.getElementById('demo-chat-input');
-    const demoSendBtn = document.getElementById('demo-chat-send');
-
-    function renderDemoMessages() {
-      demoChatBody.innerHTML = '';
-      demoMessages.forEach(msg => {
-          const div = document.createElement('div');
-          if (msg.sender === 'bot') {
-            div.classList.add('message', 'bot');
-            // Usa el mismo formateo que renderMessages
-            let formatted = msg.text
-              .replace(/\*([^\*]+)\*/g, '<b>$1</b>');
-            div.innerHTML = formatted;
-        } else if (msg.sender === 'user') {
-          div.classList.add('message', 'user');
-          div.textContent = msg.text;
-        } else if (msg.sender === 'typing') {
-          div.classList.add('message', 'typing');
-          div.textContent = msg.text;
-        }
-        demoChatBody.appendChild(div);
-      });
-      demoChatBody.scrollTop = demoChatBody.scrollHeight;
-    }
-
-    function pushDemoMessage(text, sender) {
-      demoMessages.push({ text, sender });
-      renderDemoMessages();
-    }
-
-    function sendDemoMessage() {
-      const text = demoInput.value.trim();
-      if (!text) return;
-
-      pushDemoMessage(text, 'user');
-      pushDemoMessage(TYPING_PLACEHOLDER, 'typing');
-      demoInput.value = '';
-      demoInput.disabled = true;
-      demoSendBtn.disabled = true;
-
-      const body = {
-        human_input: text,
-        client: "karia",
-        bot: selectedBot,
-        cellphone: "99999",
-        conversation_id: demoConversationId
-      };
-      fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey
-        },
-        body: JSON.stringify(body)
-      })
-        .then(res => res.json())
-        .then(data => {
-          let result;
-          if (data.result) result = data.result;
-          else if (data.body && data.body.CONVERSATION) result = data.body.CONVERSATION;
-          else result = {};
-          demoConversationId = result.conversation_id || demoConversationId;
-          const history = result.conversation_history || [];
-          let botReply = 'Error: sin respuesta del bot.';
-          if (history.length > 1) {
-            let last = history[history.length - 1];
-            // prod: string, desa: object
-            if (typeof last === 'string') {
-              botReply = last.replace(/<END_OF_TURN>/g, '').trim();
-            } else if (last && typeof last === 'object') {
-              if (last.role === 'Bot' && last.message) {
-                botReply = last.message.replace(/<END_OF_TURN>/g, '').trim();
-              } else {
-                botReply = JSON.stringify(last);
-              }
-            }
-          } else if (history.length === 1) {
-            let last = history[0];
-            if (typeof last === 'string') {
-              botReply = last.replace(/<END_OF_TURN>/g, '').trim();
-            } else if (last && typeof last === 'object') {
-              if (last.role === 'Bot' && last.message) {
-                botReply = last.message.replace(/<END_OF_TURN>/g, '').trim();
-              } else {
-                botReply = JSON.stringify(last);
-              }
-            }
-          }
-          for (let i = demoMessages.length - 1; i >= 0; i--) {
-            if (demoMessages[i].text === TYPING_PLACEHOLDER) {
-              demoMessages[i].text = botReply;
-              break;
-            }
-          }
-          renderDemoMessages();
-        })
-        .catch(err => {
-          for (let i = demoMessages.length - 1; i >= 0; i--) {
-            if (demoMessages[i].text === TYPING_PLACEHOLDER) {
-              demoMessages[i].text = '❗ Hubo un error: ' + err.message;
-              break;
-            }
-          }
-          renderDemoMessages();
-        })
-        .finally(() => {
-          demoInput.disabled = false;
-          demoSendBtn.disabled = false;
-          demoInput.focus();
-        });
-    }
-
-    demoSendBtn.addEventListener('click', sendDemoMessage);
-    demoInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); sendDemoMessage(); } });
-
-    // Floating chat button & window logic (unchanged, copy from your original)
     (function() {
-      const toggleBtn = document.getElementById('chat-toggle');
+      // Referencias a elementos
+      const toggleBtn  = document.getElementById('chat-toggle');
       const chatWindow = document.getElementById('chat-window');
-      const closeBtn = document.getElementById('chat-close');
-      const sendBtn = document.getElementById('chat-send');
+      const closeBtn   = document.getElementById('chat-close');
+      const sendBtn    = document.getElementById('chat-send');
       const inputField = document.getElementById('chat-input');
-      const chatBody = document.getElementById('chat-body');
-      let conversationId = "";
+      const chatBody   = document.getElementById('chat-body');
 
+      // URL real de endpoint
+      const endpoint = 'https://cnmp7nmsie.execute-api.us-east-1.amazonaws.com/desa/karia';
+      const apiKey = 'wHwv3TzbUM7ENA57EwmX99V5zc6htwus3Fl6WRT8';
+      let conversationId = ""; // Guardar el conversation_id entre mensajes
+
+      // Estado de la conversación y placeholder de “escribiendo…”
       let messages = [];
       const TYPING_PLACEHOLDER = 'Escribiendo…';
 
+      // Alternar visibilidad del chat
       function toggleChat() {
         if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
           chatWindow.style.display = 'flex';
@@ -741,41 +195,50 @@ Ideal para empresas que necesitan resolver consultas frecuentes, gestionar recla
           chatWindow.style.display = 'none';
         }
       }
-      function closeChat() { chatWindow.style.display = 'none'; }
 
+      // Cerrar el chat
+      function closeChat() {
+        chatWindow.style.display = 'none';
+      }
+
+      // Renderizar todo el arreglo `messages` en el DOM
       function renderMessages() {
         chatBody.innerHTML = '';
         messages.forEach((msg) => {
-            const div = document.createElement('div');
-            if (msg.sender === 'bot') {
-              div.classList.add('message', 'bot');
-              let formatted = msg.text
-                .replace(/\*([^\*]+)\*/g, '<b>$1</b>');
-              div.innerHTML = formatted;
-          } else if (msg.sender === 'user') {
-            div.classList.add('message', 'user');
-            div.textContent = msg.text;
-          } else if (msg.sender === 'typing') {
-            div.classList.add('message', 'typing');
+          const div = document.createElement('div');
+          div.classList.add('message', msg.sender);
+          if (msg.sender === 'bot') {
+            // Negrita y saltos de línea
+            let formatted = msg.text
+              .replace(/\*([^\*]+)\*/g, '<b>$1</b>') // negrita
+              .replace(/\n/g, '<br>');              // saltos de línea
+            div.innerHTML = formatted;
+          } else {
             div.textContent = msg.text;
           }
           chatBody.appendChild(div);
         });
         chatBody.scrollTop = chatBody.scrollHeight;
       }
+
+      // Añadir un mensaje al arreglo y volver a renderizar
       function pushMessage(text, sender) {
         messages.push({ text, sender });
         renderMessages();
       }
+
+      // Enviar el mensaje del usuario y llamar al endpoint
       function sendMessage() {
         const userText = inputField.value.trim();
         if (!userText) return;
+
         pushMessage(userText, 'user');
-        pushMessage(TYPING_PLACEHOLDER, 'typing');
+        pushMessage(TYPING_PLACEHOLDER, 'bot');
         inputField.value = '';
         inputField.disabled = true;
         sendBtn.disabled = true;
 
+        // Construir el body del request
         const body = {
           human_input: userText,
           client: "karia",
@@ -783,6 +246,7 @@ Ideal para empresas que necesitan resolver consultas frecuentes, gestionar recla
           cellphone: "99999",
           conversation_id: conversationId
         };
+
         fetch(endpoint, {
           method: 'POST',
           headers: {
@@ -793,16 +257,26 @@ Ideal para empresas que necesitan resolver consultas frecuentes, gestionar recla
         })
           .then(response => response.json())
           .then(data => {
+            // Soportar ambas estructuras de respuesta
             let result;
-            if (data.result) result = data.result;
-            else if (data.body && data.body.CONVERSATION) result = data.body.CONVERSATION;
-            else result = {};
+            if (data.result) {
+              result = data.result;
+            } else if (data.body && data.body.CONVERSATION) {
+              result = data.body.CONVERSATION;
+            } else {
+              result = {};
+            }
+
             conversationId = result.conversation_id || conversationId;
             const history = result.conversation_history || [];
             let botReply = 'Error: sin respuesta del bot.';
-            if (history.length > 1) botReply = history[history.length - 1];
-            else if (history.length === 1) botReply = history[0];
+            if (history.length > 1) {
+              botReply = history[history.length - 1];
+            } else if (history.length === 1) {
+              botReply = history[0];
+            }
             botReply = botReply.replace(/<END_OF_TURN>/g, '').trim();
+
             for (let i = messages.length - 1; i >= 0; i--) {
               if (messages[i].text === TYPING_PLACEHOLDER) {
                 messages[i].text = botReply;
@@ -812,6 +286,7 @@ Ideal para empresas que necesitan resolver consultas frecuentes, gestionar recla
             renderMessages();
           })
           .catch(err => {
+            console.error('Error en fetch:', err);
             for (let i = messages.length - 1; i >= 0; i--) {
               if (messages[i].text === TYPING_PLACEHOLDER) {
                 messages[i].text = `❗ Hubo un error: ${err.message}`;
@@ -826,86 +301,31 @@ Ideal para empresas que necesitan resolver consultas frecuentes, gestionar recla
             inputField.focus();
           });
       }
+
+      // EVENT LISTENERS
       toggleBtn.addEventListener('click', toggleChat);
       closeBtn.addEventListener('click', closeChat);
       sendBtn.addEventListener('click', sendMessage);
-      inputField.addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); sendMessage(); } });
+      inputField.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // Abrir chat al hacer click en el botón externo
+      const externalBtn = document.querySelector('.eael-creative-button');
+      if (externalBtn) {
+        externalBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          // Solo abrir si está cerrado
+          if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+            toggleChat();
+          }
+        });
+      }
+
+      // Iniciar con el chat oculto
       chatWindow.style.display = 'none';
     })();
-
-    // --- EmailJS CDN ---
-    var emailjsScript = document.createElement('script');
-    emailjsScript.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
-    document.head.appendChild(emailjsScript);
-
-    emailjsScript.onload = function() {
-      emailjs.init('n4z9upu7mMVPZMUt2'); // Tu Public Key
-    };
-
-    // ----- Modal Contact Form logic ------
-    const contactModal = document.getElementById('contact-modal');
-    const contactForm = document.getElementById('contact-form');
-    const modalClose = document.getElementById('modal-close');
-    const modalMsg = document.getElementById('modal-msg');
-
-    window.addEventListener('DOMContentLoaded', () => {
-      document.body.style.overflowY = 'hidden';
-      contactModal.style.display = 'flex';
-      modalMsg.textContent = '';
-      document.getElementById('demo-container').style.pointerEvents = 'none';
-      document.getElementById('demo-container').style.opacity = '0.5';
-      // Oculta el botón flotante si está en la sección Demo
-      const demoSection = document.getElementById('demo-container');
-      const chatToggle = document.getElementById('chat-toggle');
-      if (demoSection && chatToggle) {
-        chatToggle.style.display = 'none';
-      }
-    });
-    modalClose.addEventListener('click', () => {
-      window.location.href = '/';
-    });
-
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      modalMsg.textContent = 'Enviando...';
-      // Set hidden fields for EmailJS template
-      const nombre = document.getElementById('nombre').value.trim();
-      const apellido = document.getElementById('apellido').value.trim();
-      const mail = document.getElementById('mail').value.trim();
-      const telefono = document.getElementById('telefono').value.trim();
-      const empresa = document.getElementById('empresa').value.trim();
-      const now = new Date();
-      const formatted = now.toLocaleString('es-AR', { dateStyle: 'medium', timeStyle: 'short' });
-      document.getElementById('user_name').value = nombre + (apellido ? ' ' + apellido : '');
-      document.getElementById('user_email').value = mail;
-      document.getElementById('time').value = formatted;
-      document.getElementById('subject').value = 'cliente nuevo: ' + mail;
-      let msg = `Nombre: ${nombre}\n`;
-      msg += `Apellido: ${apellido}\n`;
-      msg += `Mail: ${mail}\n`;
-      msg += `Teléfono: ${telefono}\n`;
-  if (empresa) msg += `Empresa: ${empresa}\n`;
-  document.getElementById('message').value = msg;
-      if (typeof emailjs !== 'undefined') {
-        emailjs.sendForm('service_z4xy5f8', 'template_o0auv5u', contactForm)
-          .then(() => {
-            document.body.style.overflowY = '';
-            modalMsg.textContent = '¡Mensaje enviado con éxito! Gracias por contactarnos.';
-            contactForm.reset();
-            setTimeout(() => {
-              contactModal.style.display = 'none';
-              document.getElementById('demo-container').style.pointerEvents = 'auto';
-              document.getElementById('demo-container').style.opacity = '1';
-            }, 2500);
-          })
-          .catch((error) => {
-            console.error('Error al enviar:', error);
-            modalMsg.textContent = 'Hubo un error al enviar el mensaje. Intenta nuevamente.';
-          });
-      } else {
-        modalMsg.textContent = 'Error cargando EmailJS. Intenta nuevamente.';
-      }
-    });
   </script>
-</body>
-</html>
