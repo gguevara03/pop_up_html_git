@@ -435,8 +435,9 @@
         <button class="bot-btn" data-bot="informativo">Informativo</button>
       </div>
       <div class="bot-desc" id="bot-desc">
-        <b>Cómo probar nuestras demos</b><br>
-        Entrá a la demo que quieras y hablá como lo harías por WhatsApp o en el chat de una web: saludá, hacé tu consulta y seguí la conversación con naturalidad. El asistente de Karia entiende lo que necesitás, responde claro, te sugiere próximos pasos (cotizar, compartir enlaces, agendar, derivar) y, si hace falta, te conecta con alguien del equipo. Probá las dudas típicas de tus clientes o de tu equipo y pensá cómo este mismo rendimiento podría funcionar en tu web, redes o WhatsApp para mejorar la atención y ahorrarte tiempo operativo.
+        Cómo probar nuestras demos<br>
+        Seleccioná la demo que quieras. Saludá, hacé tu consulta y seguí la conversación con naturalidad. Karia entiende lo que necesitás y te sugerirá próximos pasos, cómo cotizar, compartir enlaces, agendar, derivar y conectarte con alguien del equipo si es necesario.
+        Consultá las preguntas frecuentes de tus clientes o de tu equipo y descubrí cómo podemos elevar la calidad de tu negocio, al mejorar la atención y ahorrarte tiempo operativo.
       </div>
     </div>
 
@@ -464,42 +465,23 @@
     const botData = {
       'como-usar': {
         name: '¿Cómo usar?',
-        desc: `<b>Cómo probar nuestras demos</b><br>
-Entrá a la demo que quieras y hablá como lo harías por WhatsApp o en el chat de una web: saludá, hacé tu consulta y seguí la conversación con naturalidad. El asistente de Karia entiende lo que necesitás, responde claro, te sugiere próximos pasos (cotizar, compartir enlaces, agendar, derivar) y, si hace falta, te conecta con alguien del equipo. Probá las dudas típicas de tus clientes o de tu equipo y pensá cómo este mismo rendimiento podría funcionar en tu web, redes o WhatsApp para mejorar la atención y ahorrarte tiempo operativo.`
+        desc: `Cómo probar nuestras demos<br>
+Seleccioná la demo que quieras. Saludá, hacé tu consulta y seguí la conversación con naturalidad. Karia entiende lo que necesitás y te sugerirá próximos pasos, cómo cotizar, compartir enlaces, agendar, derivar y conectarte con alguien del equipo si es necesario.<br>Consultá las preguntas frecuentes de tus clientes o de tu equipo y descubrí cómo podemos elevar la calidad de tu negocio, al mejorar la atención y ahorrarte tiempo operativo.`
       },
       'ventas': {
         name: 'Ventas',
-        desc: `<b>Demo 1 · Karia Ventas</b><br>
-Atiende consultas comerciales 24/7, captar leads y acompaña la compra. Analiza el nivel de interés en tiempo real: si detecta intención alta, acelera la conversión; si percibe indecisión, ajusta el guión para despejar dudas y resaltar beneficios.<br><br>
-<b>Ejemplos de preguntas:</b><br>
-• ¿Qué tipos de productos venden?<br>
-• ¿Cuáles son las formas de pago o promociones?<br>
-• ¿Qué características tiene el producto?<br>
-• Quiero que me contacte un asesor.<br><br>
-<b>Qué vas a notar:</b> respuestas claras, propuesta de siguientes pasos (cotizar, compartir ficha técnica, derivar a ventas) y registro de interés para seguimiento posterior.`
+        desc: `Demo 1 · Karia Ventas<br>
+Atiende consultas comerciales 24/7, capta leads fundamentales para impulsar el crecimiento de tu negocio y acompaña la compra con respuestas claras, brindando fichas técnicas, cotizaciones, o derivando a un agente real de ser necesario.<br>Analiza el nivel de interés en tiempo real: si detecta un alto nivel, acelera la conversión; si percibe indecisión, ajusta el guión para despejar dudas y resaltar beneficios.<br><b>Ejemplos de preguntas:</b><br>• ¿Qué tipos de productos venden?<br>• ¿Cuáles son las formas de pago o promociones?<br>• ¿Qué características tiene el producto?`
       },
       'despacho': {
         name: 'Despacho',
-        desc: `<b>Demo 2 · Karia Atención al Cliente</b><br>
-Ideal para empresas que necesitan resolver consultas frecuentes, gestionar reclamos y dar soporte 24/7 sin perder la calidez humana. Esta demo muestra cómo Karia puede brindar respuestas claras, consultar estados (pedidos/turnos/servicios), guiar paso a paso, escalar casos y derivar a una persona del equipo cuando corresponda.<br><br>
-<b>Ejemplos de preguntas:</b><br>
-• ¿Podrían confirmarme el estado de mi pedido?<br>
-• ¿Puedo recibir la factura por correo electrónico?<br>
-• Recibí un producto defectuoso, ¿cómo hago el reclamo?<br>
-• ¿Puedo cambiar o devolver un producto?<br>
-• ¿Cuál es el tiempo de garantía?<br><br>
-<b>Qué vas a notar:</b> tono cercano, respuestas claras y consistentes, y un flujo guiado para completar gestiones (seguimiento, reclamos, reprogramaciones) o escalar rápidamente a una persona cuando corresponde.`
+        desc: `Demo 2: Karia Atencion al cliente<br>
+Ideal para empresas que necesitan resolver consultas frecuentes, gestionar reclamos y dar soporte 24/7 sin perder la calidez humana. Karia puede brindar respuestas claras en un tono cercano, consultar estados de pedidos, turnos y servicios. Esto es ideal para gestiones de seguimiento, reclamos o reprogramaciones.También guía paso a paso, escala casos y deriva a una persona del equipo si es necesario.<br><b>Ejemplos de preguntas:</b><br>● ¿Podrían confirmarme el estado de mi pedido?<br>● ¿Puedo recibir la factura por correo electrónico?<br>● ¿Puedo cambiar o devolver un producto?`
       },
       'informativo': {
         name: 'Informativo',
-        desc: `<b>Demo 3 · Karia RRHH</b><br>
-Qué resuelve: centraliza consultas internas y libera tiempo del equipo. Cubre vacaciones y licencias; políticas internas (código de conducta, manuales, uso de IA, trabajo remoto/presencial, higiene y seguridad); beneficios y reintegros (guardería/niñera, plus vacacional); actualizaciones de legajo, cambios de obra social, CBU; recibos y capacitaciones. Cuando corresponde, deriva al área adecuada.<br><br>
-<b>Ejemplos de preguntas:</b><br>
-• ¿Cuántos días de vacaciones me corresponden?<br>
-• ¿Cómo justificar una ausencia médica?<br>
-• ¿Dónde veo o descargo mi recibo de sueldo?<br>
-• ¿Qué beneficios ofrece la empresa? ¿Hay capacitaciones esta semana?<br><br>
-<b>Qué vas a notar:</b> tono cercano, respuestas consistentes y un flujo claro para completar gestiones o escalar a un humano.`
+        desc: `Demo 3 · Karia RRHH<br>
+Con un tono cercano, brinda respuestas consistentes y un flujo claro para completar gestiones o escalarlas al equipo. Centraliza consultas internas y optimiza el tiempo de trabajo operativo. Brinda información sobre vacaciones y licencias; políticas internas como código de conducta, manuales, uso de IA, modalidad de trabajo, higiene y seguridad, beneficios y reintegros, actualizaciones de legajo, cambios de obra social, CBU, recibos de sueldo y capacitaciones.<br><b>Ejemplos de preguntas:</b><br>• ¿Cuántos días de vacaciones me corresponden?<br>• ¿Cómo justificar una ausencia médica?<br>• ¿Dónde veo o descargo mi recibo de sueldo?`
       }
     };
 
